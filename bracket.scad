@@ -2,7 +2,7 @@ use <Round-Anything/polyround.scad>
 
 BRACKET_INNER_CHANNEL_NARROW = 6.75;
 CUBBY_WIDTH = 336;
-BRACKET_DEPTH  = 40;
+BRACKET_DEPTH  = 50;
 MOUNTING_DEPTH = 14;
 BRACKET_HEIGHT = 17;
 BRACKET_WIDTH = 10;
@@ -86,9 +86,9 @@ module createPinPair(spacing, extrudeHeight) {
 module screwFlange() {
     linear_extrude(5) 
         polygon(polyRound([
-            [0                  , BRACKET_DEPTH     , 0],
-            [0                  , BRACKET_DEPTH     , 0],
-            [BRACKET_THICKNESS  , BRACKET_DEPTH     , 1],
+            [0                  , BRACKET_DEPTH/2   , 0],
+            [0                  , BRACKET_DEPTH/2   , 0],
+            [BRACKET_THICKNESS  , BRACKET_DEPTH/2   , 1],
             [BRACKET_THICKNESS  , SCREW_FLANGE_DEPTH, 5],
             [SCREW_FLANGE_HEIGHT, SCREW_FLANGE_DEPTH, 5],
             [SCREW_FLANGE_HEIGHT, 0                 , 5],
@@ -99,7 +99,7 @@ module screwFlange() {
 
 union() {
     color("red") 
-        translate([-BRACKET_THICKNESS, BRACKET_HEIGHT+9, 0])
+        translate([-BRACKET_THICKNESS, BRACKET_DEPTH-MOUNTING_DEPTH, 5])
             rotate([180, 0, 0])
                 screwFlange();
     translate([-BRACKET_THICKNESS, -MOUNTING_DEPTH, 0]) 
