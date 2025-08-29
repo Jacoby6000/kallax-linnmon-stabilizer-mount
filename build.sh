@@ -10,6 +10,7 @@ fi
 echo "Generating ${NUM_FILES} 3MF files with timestamp $datetime"
 
 SUCCESS_COUNT=0
+MESSAGES=()
 FAIL_COUNT=0
 FAILURE_MESSAGES=()
 
@@ -18,13 +19,14 @@ do
     name=$(basename "$f" .scad)
     fullname="$name-$datetime.3mf"
     echo "Generating out/$fullname from $f"
-    result=$(openscad -q -o "out/$fullname" "$f" 2>&1)
+    result=$(openscad --hardwarnings -o "out/$fullname" "$f" 2>&1)
+    formatted_result=$(echo "$result" | sed 's/^/    /')
     if [ $? -eq 0 ]; then
         SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+        MESSAGES+=("Successfully generated out/$fullname from $f:"$'\n'"$formatted_result"$'\n')
     else
         FAIL_COUNT=$((FAIL_COUNT + 1))
         # Indent error message for better readability
-        formatted_result=$(echo "$result" | sed 's/^/    /')
         FAILURE_MESSAGES+=("Failed to generate $fullname from $f:"$'\n'"$formatted_result"$'\n')
     fi
 done
@@ -40,5 +42,9 @@ if [ $FAIL_COUNT -ne 0 ]; then
     done
 else
     echo "Successfully generated ${SUCCESS_COUNT} files."
+    echo ""
+    for msg in "${MESSAGES[@]}"; do
+        echo "$msg"
+    done
     exit 0
 fi
