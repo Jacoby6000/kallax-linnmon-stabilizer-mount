@@ -9,6 +9,9 @@ BRACKET_WIDTH = 10;
 BRACKET_LIP_WIDTH = 3;
 BRACKET_THICKNESS = 3;
 
+SCREW_FLANGE_HEIGHT = 10;
+SCREW_FLANGE_DEPTH = 10;
+
 SNAP_PIN_GAP = 1.5;
 SNAP_PIN_TOOTH_WIDTH = 3;
 SNAP_PIN_THICKNESS = 1.5;
@@ -18,7 +21,6 @@ SNAP_PIN_HEIGHT = 5;
 
 function translateVector3s(vectors, translation) =
     [for (v = vectors) [v.x + translation.x, v.y + translation.y, v.z + translation.z]];
-
 
 function translateVector2s(vectors, translation) =
     translateVector3s(vectors, [translation.x, translation.y, 0]);
@@ -62,6 +64,7 @@ function rectProfile(length, width, cornerRadius = 0) =
         [0     , 0    , cornerRadius],
     ];
 
+
 module createPin(extrudeHeight = 10, flip = false) {
     transformVector = flip ? [1,-1,1] : [1,1,1];
     points = multiplyVector2s(
@@ -80,8 +83,28 @@ module createPinPair(spacing, extrudeHeight) {
     }
 }
 
+module screwFlange() {
+    linear_extrude(5) 
+        polygon(polyRound([
+            [0                  , BRACKET_DEPTH     , 0],
+            [0                  , BRACKET_DEPTH     , 0],
+            [BRACKET_THICKNESS  , BRACKET_DEPTH     , 1],
+            [BRACKET_THICKNESS  , SCREW_FLANGE_DEPTH, 5],
+            [SCREW_FLANGE_HEIGHT, SCREW_FLANGE_DEPTH, 5],
+            [SCREW_FLANGE_HEIGHT, 0                 , 5],
+            [BRACKET_THICKNESS  , 0                 , 1],
+            [0,                   0                 , 1]
+        ]));
+}
+
 union() {
-    translate([-BRACKET_THICKNESS, -MOUNTING_DEPTH, 0]) cube([BRACKET_THICKNESS, BRACKET_DEPTH, BRACKET_HEIGHT]);
+    color("red") 
+        translate([-BRACKET_THICKNESS, BRACKET_HEIGHT+9, 0])
+            rotate([180, 0, 0])
+                screwFlange();
+    translate([-BRACKET_THICKNESS, -MOUNTING_DEPTH, 0]) 
+        linear_extrude(BRACKET_HEIGHT) 
+            polygon(polyRound(rectProfile(BRACKET_THICKNESS, BRACKET_DEPTH, 1)));
     union() {
         createPinPair(SNAP_PIN_GAP, SNAP_PIN_HEIGHT);
         translate([0, 0, BRACKET_HEIGHT - SNAP_PIN_HEIGHT]) createPinPair(SNAP_PIN_GAP, SNAP_PIN_HEIGHT);
