@@ -29,7 +29,7 @@ jobs:
             git
  
     - name: Run OpenSCAD build
-      run: ./build.sh
+      run: ./openscab
     
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
