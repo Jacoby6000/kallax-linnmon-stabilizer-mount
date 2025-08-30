@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: openscad/openscad:latest
+    container: alpine:3
     
     steps:
     - name: Checkout repository
@@ -21,9 +21,12 @@ jobs:
       with:
         path: libraries
         key: ${{ hashFiles('**/dependencies.txt') }}-deps
-    
-    - name: Install git
-      run: apt update && apt install git
+
+    - name: Install packages
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: git openscad
+        version: 1
     
     - name: Run OpenSCAD build
       run: ./build.sh
