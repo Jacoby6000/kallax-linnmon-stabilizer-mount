@@ -1,1 +1,1 @@
-git@github.com:Irev-Dev/Round-Anything.git
+https://github.com/Irev-Dev/Round-Anything.git
