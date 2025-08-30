@@ -40,6 +40,7 @@ if [ $FAIL_COUNT -ne 0 ]; then
     for failed in "${FAILURE_MESSAGES[@]}"; do
         echo "$failed"
     done
+    exit 1 
 else
     echo "Successfully generated ${SUCCESS_COUNT} files."
     echo ""
