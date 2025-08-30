@@ -27,8 +27,9 @@ do
 
     echo "Cloning $dep into libraries/$dep_name"
     result=$(git clone --depth 1 "$dep" "libraries/$dep_name" 2>&1)
+    exitCode=$?
     formatted_result=$(echo "$result" | sed 's/^/    /')
-    if [ $? -eq 0 ]; then
+    if [ $exitCode -eq 0 ]; then
         MESSAGES+=("Successfully cloned $dep into libraries/$dep_name:"$'\n'"$formatted_result"$'\n')
     else
         MESSAGES+=("Failed to clone $dep into libraries/$dep_name:"$'\n'"$formatted_result"$'\n')

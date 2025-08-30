@@ -21,7 +21,9 @@ jobs:
       with:
         path: libraries
         key: ${{ hashFiles('**/dependencies.txt') }}-deps
-
+    
+    - name: Install git
+      run: apk add git
     
     - name: Run OpenSCAD build
       run: ./build.sh
