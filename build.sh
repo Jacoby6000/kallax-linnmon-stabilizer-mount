@@ -66,20 +66,20 @@ else
 
     echo "-------------------------------"
     echo ""
+    for msg in "${MESSAGES[@]}"; do
+        echo "$msg"
+    done
 
     if [ $FAIL_COUNT -ne 0 ]; then
-        echo "Failed to generate ${FAIL_COUNT} of ${NUM_FILES} files."
-        echo ""
         for failed in "${FAILURE_MESSAGES[@]}"; do
             echo "$failed"
         done
+        echo ""
+        echo "Failed to generate ${FAIL_COUNT} of ${NUM_FILES} files."
         exit 1 
     else
-        echo "Successfully generated ${SUCCESS_COUNT} files."
         echo ""
-        for msg in "${MESSAGES[@]}"; do
-            echo "$msg"
-        done
+        echo "Successfully generated ${SUCCESS_COUNT} files."
         exit 0
     fi
 fi
