@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: alpine:3
     
     steps:
     - name: Checkout repository
@@ -24,9 +23,10 @@ jobs:
 
     - name: Install packages
       run: |
-        apt update && apt install -y \
-          openscad \
-          git
+        sudo apt update && \
+          sudo apt install -y \
+            openscad \
+            git
  
     - name: Run OpenSCAD build
       run: ./build.sh
